@@ -11,9 +11,9 @@ class ahb_monitor extends uvm_monitor;//class ahb_monitor extended from uvm_moni
         extern function new(string name="ahb_monitor",uvm_component parent);
         extern function void build_phase(uvm_phase phase);
         extern function void connect_phase(uvm_phase phase);
-        //extern task run_phase(uvm_phase phase);
-        //extern task collect_data();
-//      extern function  void report_phase(uvm_phase phase);
+        extern task run_phase(uvm_phase phase);
+       extern task collect_data();
+     extern function  void report_phase(uvm_phase phase);
 endclass:ahb_monitor
 
 //constructor method defined
@@ -38,13 +38,13 @@ function void ahb_monitor::connect_phase(uvm_phase phase);
 endfunction
 
 //run phase define
-/* task ahb_monitor::run_phase(uvm_phase phase);
+ task ahb_monitor::run_phase(uvm_phase phase);
         forever
                 collect_data();//collect_data is called in forever loop
 endtask:run_phase */
 
 //collect data function is defined
-/*task ahb_monitor::collect_data();
+task ahb_monitor::collect_data();
 	ahb_xtn data_sent;
 	
 	//`uvm_fatal("MONITOR","Entering run phase")
@@ -75,4 +75,4 @@ endtask:run_phase */
       //	@(vif.ahb_mon_cb);
 endtask
 
-*/
+
