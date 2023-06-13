@@ -13,7 +13,7 @@ class ahb_agent extends uvm_agent;//ahb_agent class extended from uvm_agent
         extern function new(string name="ahb_agent", uvm_component parent=null);
         extern function void build_phase(uvm_phase phase);
         extern function void connect_phase(uvm_phase phase);
-//	extern task run_phase(uvm_phase phase);
+	
 
 endclass:ahb_agent
 
@@ -50,6 +50,4 @@ function void ahb_agent::connect_phase(uvm_phase phase);
                 ahb_drv.seq_item_port.connect(ahb_seqr.seq_item_export);
 endfunction:connect_phase
 
-/*task ahb_agent::run_phase(uvm_phase phase);
-	uvm_top.print_topology();
-endtask*/
+
