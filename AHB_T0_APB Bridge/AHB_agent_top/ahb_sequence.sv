@@ -12,7 +12,7 @@ extern function new(string name = "ahb_base_seq");
 endclass
 
 //-------------------------------------------------- constructor new method--------------------------------
-/*function ahb_base_seq ::new(string name = "ahb_base_seq");
+function ahb_base_seq ::new(string name = "ahb_base_seq");
         super.new(name);
 endfunction
 
@@ -949,7 +949,7 @@ endtask
 
 
 	
-*/
+
 
 
 
