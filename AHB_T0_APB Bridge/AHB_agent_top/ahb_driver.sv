@@ -9,9 +9,9 @@ class ahb_driver extends uvm_driver #(ahb_xtn);
         extern function new(string name="ahb_driver",uvm_component parent);
         extern function void build_phase(uvm_phase phase);
         extern function void connect_phase(uvm_phase phase);
-	// extern task run_phase(uvm_phase phase);
-	// extern task send_to_dut(ahb_xtn xtn);
-	//extern task report_phase(uvm_phase phase);
+	 extern task run_phase(uvm_phase phase);
+	 extern task send_to_dut(ahb_xtn xtn);
+	extern task report_phase(uvm_phase phase);
 
 endclass
 
@@ -30,7 +30,7 @@ function void ahb_driver::connect_phase(uvm_phase phase);
         vif=ahb_cfg.vif;
 endfunction
 
-/*task ahb_driver::run_phase(uvm_phase phase);
+task ahb_driver::run_phase(uvm_phase phase);
 	@(vif.ahb_drv_cb);
 		vif.ahb_drv_cb.HRESETn <= 1'b0;
 	@(vif.ahb_drv_cb);
@@ -41,9 +41,9 @@ endfunction
 		send_to_dut(req);
 		seq_item_port.item_done();
 	end
-endtask*/
+endtask
 
-/*task ahb_driver::send_to_dut(ahb_xtn xtn);
+task ahb_driver::send_to_dut(ahb_xtn xtn);
      begin
 		`uvm_info("AHB DRIVER",$sformatf("Printing from driver \n %s",xtn.sprint()),UVM_LOW)
 //		@(vif.ahb_drv_cb);
@@ -70,7 +70,7 @@ endtask*/
 			//@(vif.ahb_drv_cb);
 			`uvm_info("DRIVER",$sformatf("Reading from address=%0d",xtn.HADDR),UVM_LOW)
 		end 
-          $display("*****************FROM DRIVER WRITE IS DONE **********************"); */
+          $display("*****************FROM DRIVER WRITE IS DONE **********************"); 
 //	repeat(5)
 //	@(vif.ahb_drv_cb);	
 end
