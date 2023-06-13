@@ -1,0 +1,205 @@
+#Makefile for UVM Testbench
+RTL= ../Bridge_rtl/* +define+WRAPPING_INCR
+RTL1=../Bridge_rtl/*
+work= work #library name
+SVTB1= ../env/top.sv
+INC = +incdir+../env +incdir+../test +incdir+../ahb_agent_top +incdir+../apb_agent_top
+SVTB2 = ../test/test_pkg.sv
+COVOP= -coveropt 3 +cover=bcsf
+VSIMOPT= -vopt -voptargs=+acc
+VSIMCOV= -coverage -sva
+VSIMBATCH1= -c -do  " log -r /* ;coverage save -onexit mem_cov1;run -all; exit"
+VSIMBATCH2= -c -do  " log -r /* ;coverage save -onexit mem_cov2;run -all; exit"
+VSIMBATCH3= -c -do  " log -r /* ;coverage save -onexit mem_cov3;run -all; exit"
+VSIMBATCH4= -c -do  " log -r /* ;coverage save -onexit mem_cov4;run -all; exit"
+VSIMBATCH5= -c -do  " log -r /* ;coverage save -onexit mem_cov5;run -all; exit"
+VSIMBATCH6= -c -do  " log -r /* ;coverage save -onexit mem_cov6;run -all; exit"
+VSIMBATCH7= -c -do  " log -r /* ;coverage save -onexit mem_cov7;run -all; exit"
+VSIMBATCH8= -c -do  " log -r /* ;coverage save -onexit mem_cov8;run -all; exit"
+VSIMBATCH9= -c -do  " log -r /* ;coverage save -onexit mem_cov9;run -all; exit"
+VSIMBATCH10= -c -do " log -r /* ;coverage save -onexit mem_cov10;run -all; exit"
+VSIMBATCH11= -c -do " log -r /* ;coverage save -onexit mem_cov11;run -all; exit"
+VSIMBATCH12= -c -do " log -r /* ;coverage save -onexit mem_cov12;run -all; exit"
+VSIMBATCH13= -c -do " log -r /* ;coverage save -onexit mem_cov13;run -all; exit"
+VSIMBATCH14= -c -do " log -r /* ;coverage save -onexit mem_cov14;run -all; exit"
+VSIMBATCH15= -c -do " log -r /* ;coverage save -onexit mem_cov15;run -all; exit"
+VSIMBATCH16= -c -do " log -r /* ;coverage save -onexit mem_cov16;run -all; exit"
+VSIMBATCH17= -c -do " log -r /* ;coverage save -onexit mem_cov17;run -all; exit"
+
+help:
+	@echo =============================================================================================================
+	@echo "! USAGE          --  make target                                                                                                                 !"
+	@echo "! clean          =>  clean the earlier log and intermediate files.                                                                       !"
+	@echo "! sv_cmp         =>  Create library and compile the code.                                                                                !"
+	@echo "! run_sim    =>  run the simulation in batch mode.                                                                               !"
+	@echo "! run_test       =>  clean, compile & run the simulation for single_ahb_test in batch mode.                !"
+	@echo "! run_test1      =>  clean, compile & run the simulation for ahb_wrap4_test in batch mode.                   !"
+	@echo "! run_test2      =>  clean, compile & run the simulation for ahb_wrap8_test in batch mode.                   !"
+	@echo "! run_test3      => clean,compile & run the simulation for ahb_wrap16_test in batch mode.                   !"
+	
+	@echo "! run_test4      =>  clean, compile & run the simulation for ahb_incr4_test in batch mode.                   !"
+	@echo "! run_test2      =>  clean, compile & run the simulation for ahb_incr8_test in batch mode.                   !"
+	@echo "! run_test3      => clean,compile & run the simulation for ahb_incr16_test in batch mode.                   !"
+	@echo "! view_wave1 =>  To view the waveform of single_ahb_test                                                                    !"
+	@echo "! view_wave2 =>  To view the waveform of ahb_wrap4_test                                                                               !"
+	@echo "! view_wave3 =>  To view the waveform of ahb_wrap8_test                                                                              !"
+	@echo "! view_wave4 => To view the waveform of ahb_wrap16_test                                                                     !"
+	
+	@echo "! view_wave5 =>  To view the waveform of ahb_incr4_test                                                                               !"
+	@echo "! view_wave6 =>  To view the waveform of ahb_incr8_test                                                                              !"
+	@echo "! view_wave7 => To view the waveform of ahb_incr16_test                                                                     !"
+	@echo "! regress    =>  clean, compile and run all testcases in batch mode.                                                             !"
+	@echo "! report     =>  To merge coverage reports for all testcases and  convert to html format.                        !"
+	@echo "! cov        =>  To open merged coverage report in html format.                                                                          !"
+	@echo ====================================================================================================================
+
+sv_cmp:
+	 vlib $(work)
+	vmap work $(work)
+	vlog -work $(work) $(COVOP) $(RTL) $(INC) $(SVTB2) $(SVTB1)
+
+sv_cmp1:
+	vlib $(work)
+	vmap work $(work)
+	vlog -work $(work) $(COVOP) $(RTL1) $(INC) $(SVTB2) $(SVTB1)
+
+run_test:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH1) -wlf wave_file1.wlf -l test1.log  -sv_seed random  work.top +UVM_TESTNAME=single_ahb_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov1
+
+
+run_test1:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH2) -wlf wave_file2.wlf -l test2.log  -sv_seed random  work.top +UVM_TESTNAME=ahb_wrap4_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov2
+
+run_test2:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH3) -wlf wave_file3.wlf -l test3.log  -sv_seed random  work.top +UVM_TESTNAME=ahb_wrap8_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov3
+
+run_test3:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH4) -wlf wave_file4.wlf -l test4.log  -sv_seed random  work.top +UVM_TESTNAME=ahb_wrap16_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov4
+
+run_test4:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH5) -wlf wave_file5.wlf -l test5.log  -sv_seed random  work.top +UVM_TESTNAME=ahb_incr4_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov5
+
+run_test5:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH6) -wlf wave_file6.wlf -l test6.log  -sv_seed random  work.top +UVM_TESTNAME=ahb_incr8_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov6
+
+run_test6:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH7) -wlf wave_file7.wlf -l test7.log  -sv_seed random  work.top +UVM_TESTNAME=ahb_incr16_test
+	vcover report  -cvg  -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov7
+
+
+run_test7:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH8) -wlf wave_file8.wlf -l test8.log -sv_seed random work.top +UVM_TESTNAME=rsingle_ahb_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov8
+
+run_test8:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH9) -wlf wave_file9.wlf -l test9.log -sv_seed random work.top +UVM_TESTNAME=rahb_wrap4_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov9
+
+run_test9:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH10) -wlf wave_file10.wlf -l test10.log -sv_seed random work.top +UVM_TESTNAME=rahb_wrap8_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov10
+
+run_test10:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH11) -wlf wave_file11.wlf -l test11.log -sv_seed random work.top +UVM_TESTNAME=rahb_wrap16_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov11
+
+run_test11:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH12) -wlf wave_file12.wlf -l test12.log -sv_seed random work.top +UVM_TESTNAME=rahb_incr4_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov12
+
+run_test12:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH13) -wlf wave_file13.wlf -l test13.log -sv_seed random work.top +UVM_TESTNAME=rahb_incr8_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov13
+
+run_test13:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH14) -wlf wave_file14.wlf -l test14.log -sv_seed random work.top +UVM_TESTNAME=rahb_incr16_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov14
+
+
+run_test14:sv_cmp1
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH14) -wlf wave_file15.wlf -l test15.log -sv_seed random work.top +UVM_TESTNAME=unspecified_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov15
+
+
+run_test15:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH15) -wlf wave_file16.wlf -l test16.log -sv_seed random work.top +UVM_TESTNAME=rwahb_incr4_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov16
+
+run_test16:sv_cmp
+	vsim -cvgperinstance $(VSIMOPT) $(VSIMCOV) $(VSIMBATCH16) -wlf wave_file17.wlf -l test17.log -sv_seed random work.top +UVM_TESTNAME=ibahb_incr16_test
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov17
+
+
+view_wave1:
+	vsim -view wave_file1.wlf
+
+view_wave2:
+	vsim -view wave_file2.wlf
+
+view_wave3:
+	vsim -view wave_file3.wlf
+
+view_wave4:
+	vsim -view wave_file4.wlf
+
+view_wave5:
+	vsim -view wave_file5.wlf
+
+view_wave6:
+	vsim -view wave_file6.wlf
+
+view_wave7:
+	vsim -view wave_file7.wlf
+
+view_wave15:
+	vsim -view wave_file15.iwlf
+
+view_wave8:
+	vsim -view wave_file8.wlf
+
+view_wave9:
+	vsim -view wave_file9.wlf
+
+view_wave10:
+	vsim -view wave_file10.wlf
+
+view_wave11:
+	vsim -view wave_file11.wlf
+
+view_wave12:
+	vsim -view wave_file12.wlf
+
+view_wave13:
+	vsim -view wave_file13.wlf
+
+view_wave14:
+	vsim -view wave_file14.wlf
+
+#view_wave15:
+#	vsim -view wave_file15.wlf
+
+view_wave16:
+	vsim -view wave_file16.wlf
+
+view_wave17:
+	vsim -view wave_file17.wlf
+
+report:
+	vcover merge mem_cov mem_cov1 mem_cov2 mem_cov3 mem_cov4 mem_cov5 mem_cov6 mem_cov7  mem_cov8 mem_cov9 mem_cov10 mem_cov11 mem_cov12 mem_cov13 mem_cov14 mem_cov15 mem_cov16 mem_cov17
+	vcover report -cvg -details -nocompactcrossbins -codeAll -assert -directive -html mem_cov
+
+regress: clean run_test run_test1 run_test2 run_test3 run_test4 run_test5 run_test6 run_test7 run_test8 run_test9 run_test10 run_test11 run_test12 run_test13 run_test14 run_test15 run_test16 report cov
+
+cov:
+	firefox covhtmlreport/index.html&
+
+clean:
+	rm -rf transcript* *log*  vsim.wlf fcover* covhtml* mem_cov* *.wlf modelsim.ini
+	clear
+
